@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artistas - GrooveLab</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-inner">
+            <div class="nav-left logo">GrooveLab</div>
+
+            <nav class="nav-center">
+                <a href="artistas.html">ARTISTAS</a>
+                <a href="generos.html">GÉNEROS</a>
+                <a href="#">PRE-VENTA</a>
+                <a href="#">STOCK</a>
+                <a href="#">NOSOTROS</a>
+            </nav>
+
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="🔍">
+                </div>
+                <a class="login-btn" href="#">INICIAR SESIÓN / REGISTRARSE</a>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- CONTENIDO GENERAL -->
+    <div class="container">
+
+        <!-- FILTROS -->
+        <aside class="filters">
+
+            <h3>Buscar:</h3>
+<input type="text" class="search-input" placeholder="Buscar artista...">
+
+
+            <h2>Ordenar por:</h2>
+
+            <details>
+                <summary>Género</summary>
+                <label><input type="checkbox"> Rock</label>
+                <label><input type="checkbox"> Pop</label>
+                <label><input type="checkbox"> Soul</label>
+                <label><input type="checkbox"> Jazz</label>
+            </details>
+
+            <details>
+                <summary>Precio</summary>
+                <label><input type="checkbox"> Menos de S/ 50</label>
+                <label><input type="checkbox"> S/ 50 - S/ 100</label>
+                <label><input type="checkbox"> Más de S/ 100</label>
+            </details>
+
+            <details>
+                <summary>Popularidad</summary>
+                <label><input type="checkbox"> Más popular</label>
+                <label><input type="checkbox"> Menos poluar</label>
+            </details>
+
+        </aside>
+
+
+        <!-- GRID DE ARTISTAS -->
+        <section class="artist-grid" id="artistsGrid">
+    
+            <div class="artist-card">
+                <img src="Artistas/taylor.avif" alt="Taylor Swift">
+                <p>Taylor Swift</p>
+            </div>
+
+            <div class="artist-card">
+                <img src="Artistas/jennie.jpg" alt="Jennie">
+                <p>Jennie</p>
+            </div>
+
+            <div class="artist-card">
+                <img src="Artistas/sabri.webp" alt="Sabrina Carpenter">
+                <p>Sabrina Carpenter</p>
+            </div>
+
+            <div class="artist-card">
+                <img src="Artistas/oliv.webp" alt="Olivia Rodrigo">
+                <p>Olivia Rodrigo</p>
+            </div>
+
+            <div class="artist-card">
+                <img src="Artistas/lady.jpg" alt="Lady Gaga">
+                <p>Lady Gaga</p>
+            </div>
+
+            <div class="artist-card">
+                <img src="Artistas/week.jpeg" alt="The weekend">
+                <p>The weekend</p>
+            </div>
+
+            <div class="artist-card">
+                <img src="Artistas/bruno.webp" alt="Bruno Mars">
+                <p>Bruno Mars</p>
+            </div>
+
+            <div class="artist-card">
+                <img src="Artistas/rosalia.jpg" alt="Rosalia">
+                <p>Rosalia</p>
+            </div>
+
+            <div class="artist-card">
+                <img src="Artistas/rauw.jpg" alt= "Rauw Alejandro">
+                <p>Rauw Alejandro</p>
+            </div>
+
+        </section>
+    </div>
+
+    
+</div>
+
+<button class="ver-mas-btn" id="verMasBtn">Ver más</button> 
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Lista de artistas extra )
+  const artistasExtra = [
+    { nombre: "Artista 10", imagen: "artista10.jpg" },
+    { nombre: "Artista 11", imagen: "artista11.jpg" },
+    { nombre: "Artista 12", imagen: "artista12.jpg" },
+    { nombre: "Artista 13", imagen: "artista13.jpg" },
+    { nombre: "Artista 14", imagen: "artista14.jpg" },
+    { nombre: "Artista 15", imagen: "artista15.jpg" },
+    { nombre: "Artista 16", imagen: "artista16.jpg" },
+    { nombre: "Artista 17", imagen: "artista17.jpg" },
+    { nombre: "Artista 18", imagen: "artista18.jpg" },
+    { nombre: "Artista 19", imagen: "artista19.jpg" },
+    { nombre: "Artista 20", imagen: "artista20.jpg" },
+    { nombre: "Artista 21", imagen: "artista21.jpg" }
+  ];
+
+  const containerSelectors = ["#artistsGrid", ".artists-grid", ".artist-grid", ".grid-artistas", ".artist-grid"];
+  let grid = null;
+  for (const sel of containerSelectors) {
+    grid = document.querySelector(sel);
+    if (grid) break;
+  }
+
+  if (!grid) {
+    console.error("VER-MÁS: No se encontró el contenedor de artistas. Selecciones probadas:", containerSelectors);
+    return;
+  }
+
+  let verMasBtn = document.getElementById("verMasBtn");
+  if (!verMasBtn) {
+    verMasBtn = document.createElement("button");
+    verMasBtn.id = "verMasBtn";
+    verMasBtn.className = "ver-mas-btn";
+    verMasBtn.textContent = "VER MÁS";
+    grid.insertAdjacentElement("afterend", verMasBtn);
+  }
+
+  const cardSelectors = [".artist-card", ".card", ".artista-card"];
+  let templateCard = null;
+  for (const s of cardSelectors) {
+    templateCard = document.querySelector(s);
+    if (templateCard) break;
+  }
+
+  function crearCardFromData(artista) {
+    const card = document.createElement("div");
+    card.className = templateCard ? templateCard.className : "artist-card";
+    card.innerHTML = `
+      <img src="${artista.imagen}" alt="${artista.nombre}">
+      <p class="artist-name">${artista.nombre}</p>
+      <button class="btn-ver">Ver</button>
+    `;
+    return card;
+  }
+
+  function cloneCardWithData(artista) {
+    if (!templateCard) return crearCardFromData(artista);
+
+    const clone = templateCard.cloneNode(true);
+
+    const img = clone.querySelector("img");
+    if (img) {
+      img.src = artista.imagen;
+      img.alt = artista.nombre;
+    } else {
+      const newImg = document.createElement("img");
+      newImg.src = artista.imagen;
+      newImg.alt = artista.nombre;
+      clone.insertAdjacentElement("afterbegin", newImg);
+    }
+
+    const nameSelectors = ["p", ".artist-name", ".nombre", "h3", "h4"];
+    let nameEl = null;
+    for (const sel of nameSelectors) {
+      nameEl = clone.querySelector(sel);
+      if (nameEl) break;
+    }
+    if (nameEl) {
+      nameEl.textContent = artista.nombre;
+    } else {
+      const p = document.createElement("p");
+      p.className = "artist-name";
+      p.textContent = artista.nombre;
+      clone.appendChild(p);
+    }
+
+    let btn = clone.querySelector(".btn-ver, .card-btn, .ver-btn, .btn");
+    if (!btn) {
+      btn = document.createElement("button");
+      btn.className = "btn-ver";
+      btn.textContent = "Ver";
+      clone.appendChild(btn);
+    }
+
+    return clone;
+  }
+
+  let index = 0;
+
+  verMasBtn.addEventListener("click", () => {
+    if (index >= artistasExtra.length) {
+      verMasBtn.style.display = "none";
+      return;
+    }
+
+    const toAdd = Math.min(8, artistasExtra.length - index);
+    for (let i = 0; i < toAdd; i++) {
+      const artista = artistasExtra[index++];
+      const newCard = templateCard ? cloneCardWithData(artista) : crearCardFromData(artista);
+      grid.appendChild(newCard);
+    }
+
+    if (index >= artistasExtra.length) {
+      verMasBtn.style.display = "none";
+    }
+
+  });
+
+});
+</script>
+
+
+
+</body>
+</html>
