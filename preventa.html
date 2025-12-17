@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrooveLab</title>
+    <link rel="stylesheet" href="preventa.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body> 
+
+<!-- NAVBAR -->
+   <header class="navbar">
+        <div class="nav-inner">
+            <div class="nav-left logo">
+    <a href="index.html">GrooveLab</a>
+</div>
+
+            <nav class="nav-center">
+                <a href="artistas.html" >ARTISTAS</a>
+                <a href="generos.html">GÉNEROS</a>
+                <a href="preventa.html"class="active">PRE-VENTA</a>
+                <a href="stock.html">STOCK</a>
+                <a href="nosotros.html">NOSOTROS</a>
+            </nav>
+
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="🔍">
+                </div>
+                <!-- CARRITO -->
+    <div class="cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count">0</span>
+    </div>
+
+    <a class="login-btn" href="sesión.html">INICIAR SESIÓN / REGISTRARSE</a>
+</div>
+
+<div class="cart-popup" id="cart-popup">
+    <div class="cart-item">
+        <img id="popup-img" src="" alt="">
+        <div class="cart-info">
+            <p id="popup-title"></p>
+            <span id="popup-price"></span>
+        </div>
+    </div>
+
+    <a href="carrito.html" class="view-cart">Ver carrito</a>
+</div>
+
+<script>
+   (function () {
+    const navEntries = performance.getEntriesByType("navigation");
+    if (navEntries.length > 0 && navEntries[0].type === "reload") {
+        localStorage.removeItem("cartProducts");
+        localStorage.removeItem("cartCount");
+    }
+})();
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cartNumber = document.getElementById("cart-count");
+
+    let cartCount = localStorage.getItem("cartCount")
+        ? parseInt(localStorage.getItem("cartCount"))
+        : 0;
+
+    cartNumber.textContent = cartCount;
+
+    const buttons = document.querySelectorAll(".add-btn, .btn-add");
+
+    const popup = document.getElementById("cart-popup");
+    const popupImg = document.getElementById("popup-img");
+    const popupTitle = document.getElementById("popup-title");
+    const popupPrice = document.getElementById("popup-price");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+
+            const card = button.closest(".preventa-card, .stock-card");
+            if (!card) return;
+
+            const img = card.querySelector("img").src;
+            const title = card.querySelector("h3").textContent;
+
+            // 🔴 quitamos "S/." y lo volvemos número
+            const priceText = card.querySelector("p")?.textContent || "S/. 0";
+            const price = parseFloat(priceText.replace("S/.", "").trim());
+
+            // 🔵 LEER CARRITO
+            let cart = JSON.parse(localStorage.getItem("cartProducts")) || [];
+
+            // 🔵 VER SI YA EXISTE
+            const existingProduct = cart.find(item => item.title === title);
+
+            if (existingProduct) {
+                existingProduct.qty += 1;
+            } else {
+                cart.push({
+                    img: img,
+                    title: title,
+                    price: price,
+                    qty: 1
+                });
+            }
+
+            // 🔵 GUARDAR
+            localStorage.setItem("cartProducts", JSON.stringify(cart));
+
+            // 🛒 contador
+            cartCount++;
+            cartNumber.textContent = cartCount;
+            localStorage.setItem("cartCount", cartCount);
+
+            // popup
+            if (popup) {
+                popupImg.src = img;
+                popupTitle.textContent = title;
+                popupPrice.textContent = "S/. " + price.toFixed(2);
+
+                popup.classList.add("show");
+                setTimeout(() => popup.classList.remove("show"), 3000);
+            }
+        });
+    });
+
+});
+</script>
+
+
+
+
+
+</header>
+
+
+<section class="preventa-section">
+
+    <h2 class="preventa-title">PRE-VENTA</h2>
+
+    <div class="preventa-grid">
+
+        <div class="preventa-card">
+            <img src="preventa/1.webp" alt="">
+            <h3>Golden 7 - Demon Hunters</h3>
+            <p>S/. 210.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/2.webp" alt="">
+            <h3>I Will - XLOV</h3>
+            <p>S/. 179.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card featured">
+            <img src="preventa/3.jpg" alt="">
+            <h3>The Beatles: 1964 US Albums in Mono</h3>
+            <p>S/. 189.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/4.avif" alt="">
+            <h3>Invisible de La Ley</h3>
+            <p>S/. 165.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/5.jpg" alt="">
+            <h3>Funky Stuff - Jiro Inagaki</h3>
+            <p>S/. 269.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/10.webp">
+            <h3>Live from Glastonbury – Olivia Rodrigo</h3>
+            <p>S/. 190.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/11.jpg">
+            <h3>A Matter of Time – Laufey</h3>
+            <p>S/. 130.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/12.png">
+            <h3>Yungblud – Idols</h3>
+            <p>S/. 120.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/13.jpg">
+            <h3>Beautiful Chaos – Katseye</h3>
+            <p>S/. 119.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/6.jpg">
+            <h3>Frank Sinatra – Swingin' Lovers</h3>
+            <p>S/. 119.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/7.jpg">
+            <h3>The Beatles – Abbey Road edición aniversario LP</h3>
+            <p>S/. 199.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/8.jpg">
+            <h3>Dawn FM - The Weeknd</h3>
+            <p>S/. 99.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/9.jpg">
+            <h3>Generación Perdida – 6 Voltios</h3>
+            <p>S/. 119.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/15.jpg">
+            <h3>The life of a showgirl - Taylor swift</h3>
+       <button class="add-btn">Agregar</button>
+        </div>
+
+        <div class="preventa-card">
+            <img src="preventa/16.jpg">
+            <h3>Breach – Twenty One Pilots</h3>
+            <p>S/. 103.00</p>
+            <button class="add-btn">Agregar</button>
+        </div>
+
+    </div>
+
+</section>
+

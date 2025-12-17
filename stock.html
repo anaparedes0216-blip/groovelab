@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock - GrooveLab</title>
+
+<link rel="stylesheet" href="stock.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+   <header class="navbar">
+        <div class="nav-inner">
+            <div class="nav-left logo">
+    <a href="index.html">GrooveLab</a>
+</div>
+            
+
+            <nav class="nav-center">
+                <a href="artistas.html" >ARTISTAS</a>
+                <a href="generos.html">GÉNEROS</a>
+                <a href="preventa.html">PRE-VENTA</a>
+                <a href="stock.html"class="active">STOCK</a>
+                <a href="nosotros.html">NOSOTROS</a>
+            </nav>
+
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="🔍">
+                    </div>
+                <!-- CARRITO -->
+    <div class="cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count">0</span>
+    </div>
+
+    <a class="login-btn" href="sesión.html">INICIAR SESIÓN / REGISTRARSE</a>
+</div>
+
+<div class="cart-popup" id="cart-popup">
+    <div class="cart-item">
+        <img id="popup-img" src="" alt="">
+        <div class="cart-info">
+            <p id="popup-title"></p>
+            <span id="popup-price"></span>
+        </div>
+    </div>
+
+    <a href="carrito.html" class="view-cart">Ver carrito</a>
+</div>
+
+<script>
+    (function () {
+    const navEntries = performance.getEntriesByType("navigation");
+    if (navEntries.length > 0 && navEntries[0].type === "reload") {
+        localStorage.removeItem("cartProducts");
+        localStorage.removeItem("cartCount");
+    }
+})();
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cartNumber = document.getElementById("cart-count");
+
+    let cartCount = localStorage.getItem("cartCount")
+        ? parseInt(localStorage.getItem("cartCount"))
+        : 0;
+
+    cartNumber.textContent = cartCount;
+
+    const buttons = document.querySelectorAll(".add-btn, .btn-add");
+
+    const popup = document.getElementById("cart-popup");
+    const popupImg = document.getElementById("popup-img");
+    const popupTitle = document.getElementById("popup-title");
+    const popupPrice = document.getElementById("popup-price");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+
+            const card = button.closest(".preventa-card, .stock-card");
+            if (!card) return;
+
+            const img = card.querySelector("img").src;
+            const title = card.querySelector("h3").textContent;
+
+            // 🔴 quitamos "S/." y lo volvemos número
+            const priceText = card.querySelector("p")?.textContent || "S/. 0";
+            const price = parseFloat(priceText.replace("S/.", "").trim());
+
+            // 🔵 LEER CARRITO
+            let cart = JSON.parse(localStorage.getItem("cartProducts")) || [];
+
+            // 🔵 VER SI YA EXISTE
+            const existingProduct = cart.find(item => item.title === title);
+
+            if (existingProduct) {
+                existingProduct.qty += 1;
+            } else {
+                cart.push({
+                    img: img,
+                    title: title,
+                    price: price,
+                    qty: 1
+                });
+            }
+
+            // 🔵 GUARDAR
+            localStorage.setItem("cartProducts", JSON.stringify(cart));
+
+            // 🛒 contador
+            cartCount++;
+            cartNumber.textContent = cartCount;
+            localStorage.setItem("cartCount", cartCount);
+
+            // popup
+            if (popup) {
+                popupImg.src = img;
+                popupTitle.textContent = title;
+                popupPrice.textContent = "S/. " + price.toFixed(2);
+
+                popup.classList.add("show");
+                setTimeout(() => popup.classList.remove("show"), 3000);
+            }
+        });
+    });
+
+});
+</script>
+
+
+
+
+</header>
+
+<h1 class="section-title">EN STOCK</h1>
+
+<div class="container">
+
+    <!-- FILTROS (COPIADO EXACTO) -->
+    <aside class="filters">
+
+        <h3>Buscar:</h3>
+        <input type="text" class="search-input" id="searchBox" placeholder="Buscar...">
+
+        <h2>Ordenar por:</h2>
+
+        <details>
+            <summary>Género</summary>
+            <label><input type="checkbox"> Rock</label>
+            <label><input type="checkbox"> Pop</label>
+            <label><input type="checkbox"> Soul</label>
+            <label><input type="checkbox"> Jazz</label>
+        </details>
+
+        <details>
+            <summary>Precio</summary>
+            <label><input type="checkbox"> Menos de S/ 50</label>
+            <label><input type="checkbox"> S/ 50 - S/ 100</label>
+            <label><input type="checkbox"> Más de S/ 100</label>
+        </details>
+
+        <details>
+            <summary>Popularidad</summary>
+            <label><input type="checkbox"> Más popular</label>
+            <label><input type="checkbox"> Menos popular</label>
+        </details>
+
+    </aside>
+
+
+
+    <!-- GRID 4 COLUMNAS -->
+    <section class="stock-grid" id="stockGrid">
+
+        <!-- EJEMPLOS -->
+        <div class="stock-card">
+            <img src="stock/1.jpg">
+            <h3>Frank Sinatra – Swingin' Lovers</h3>
+            <p>S/. 119.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/2.jpg">
+            <h3>Spider-Man: Homecoming</h3>
+            <p>S/. 103.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/3.webp">
+            <h3>Pink Pony Club – Chappell Roan</h3>
+            <p>S/. 99.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/4.jpg">
+            <h3>La Pachanga – Vilma Palma</h3>
+            <p>S/. 119.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+
+
+        <div class="stock-card">
+            <img src="stock/5.avif">
+            <h3>Debí Tirar Más Fotos - Bad Bunny</h3>
+            <p>S/. 190.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/6.jpg">
+            <h3>Eternal Sunshine - The Weeknd</h3>
+            <p>S/. 130.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/7.jpg">
+            <h3>People Watching - Sam Fender</h3>
+            <p>S/. 120.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/8.jpg">
+            <h3>Kendrick Lamar – GNX</h3>
+            <p>S/. 119.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/9.jpg">
+            <h3>Moisturizer - Wet Leg</h3>
+            <p>S/. 119.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/7.jpg">
+            <h3>Spider-Man: Homecoming</h3>
+            <p>S/. 103.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/8.jpg">
+            <h3>Pink Pony Club – Chappell Roan</h3>
+            <p>S/. 99.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/9.jpg">
+            <h3>La Pachanga – Vilma Palma</h3>
+            <p>S/. 119.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+
+
+         <div class="stock-card">
+            <img src="stock/10.jpg">
+            <h3>Virgin - Lorde</h3>
+            <p>S/. 119.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/11.jpg">
+            <h3>AM - Arctic Monkeys</h3>
+            <p>S/. 103.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/12.webp">
+            <h3>Various Releases - Lana Del Rey</h3>
+            <p>S/. 99.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/13.jpg">
+            <h3>Sincerely - Kali Uchis</h3>
+            <p>S/. 119.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/14.jpg">
+            <h3>I Love My Computer - Ninajirachi</h3>
+            <p>S/. 190.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/15.jpg">
+            <h3>Romance - Fontaines D.C.</h3>
+            <p>S/. 130.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/16.jpg">
+            <h3>What’s the Story Morning Glory - Oasis</h3>
+            <p>S/. 120.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/17.jpg">
+            <h3>The Clearing - Wolf Alice</h3>
+            <p>S/. 119.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/18.jpg">
+            <h3>Pretty on the Internet - K’s</h3>
+            <p>S/. 119.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/19.jpg">
+            <h3>In Rainbows - Radiohead</h3>
+            <p>S/. 103.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/20.jpg">
+            <h3>Rumours - Fleetwood Mac</h3>
+            <p>S/. 99.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+        <div class="stock-card">
+            <img src="stock/21.jpg">
+            <h3>FKA Twigs - EUSEXUA</h3>
+            <p>S/. 119.00</p>
+            <button class="btn-add">Agregar</button>
+        </div>
+
+    </section>
+
+</div>
+
+<button class="ver-mas-btn" id="verMasStock">Ver más</button>
+
+
+
+
+</body>
+</html>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const cards = document.querySelectorAll(".stock-card");
+  const btn = document.getElementById("verMasStock");
+
+  const itemsPerClick = 12; // 3 filas x 4 columnas
+  let visibleItems = 12;    // los primeros que se ven
+
+  // Oculta todo lo que no debe verse al inicio
+  cards.forEach((card, index) => {
+    if (index >= visibleItems) {
+      card.style.display = "none";
+    }
+  });
+
+  btn.addEventListener("click", () => {
+
+    let shown = 0;
+
+    cards.forEach((card, index) => {
+      if (index >= visibleItems && shown < itemsPerClick) {
+        card.style.display = "block";
+        shown++;
+      }
+    });
+
+    visibleItems += itemsPerClick;
+
+    // Si ya no hay más productos
+    if (visibleItems >= cards.length) {
+      btn.style.display = "none";
+    }
+
+  });
+
+});
+</script>
+
+
+

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrooveLab</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body> 
+
+<!-- NAVBAR -->
+   <header class="navbar">
+        <div class="nav-inner">
+            <div class="nav-left logo">
+    <a href="index.html">GrooveLab</a>
+</div>
+
+            <nav class="nav-center">
+                <a href="artistas.html">ARTISTAS</a>
+                <a href="generos.html">GÉNEROS</a>
+                <a href="preventa.html">PRE-VENTA</a>
+                <a href="stock.html">STOCK</a>
+                <a href="nosotros.html">NOSOTROS</a>
+            </nav>
+
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="🔍">
+                </div>
+                <!-- CARRITO -->
+    <div class="cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count">0</span>
+    </div>
+
+    <a class="login-btn" href="sesión.html">INICIAR SESIÓN / REGISTRARSE</a>
+</div>
+
+<div class="cart-popup" id="cart-popup">
+    <div class="cart-item">
+        <img id="popup-img" src="" alt="">
+        <div class="cart-info">
+            <p id="popup-title"></p>
+            <span id="popup-price"></span>
+        </div>
+    </div>
+
+    <a href="carrito.html" class="view-cart">Ver carrito</a>
+</div>
+
+<script>
+    (function () {
+    const navEntries = performance.getEntriesByType("navigation");
+    if (navEntries.length > 0 && navEntries[0].type === "reload") {
+        localStorage.removeItem("cartProducts");
+        localStorage.removeItem("cartCount");
+    }
+})();
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cartNumber = document.getElementById("cart-count");
+
+    let cartCount = localStorage.getItem("cartCount")
+        ? parseInt(localStorage.getItem("cartCount"))
+        : 0;
+
+    cartNumber.textContent = cartCount;
+
+    const buttons = document.querySelectorAll(".add-btn, .btn-add");
+
+    const popup = document.getElementById("cart-popup");
+    const popupImg = document.getElementById("popup-img");
+    const popupTitle = document.getElementById("popup-title");
+    const popupPrice = document.getElementById("popup-price");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+
+            const card = button.closest(".item, .preventa-card, .stock-card");
+            if (!card) return;
+
+            const img = card.querySelector("img").src;
+            const title = card.querySelector("h3").textContent;
+
+            // 🔴 quitamos "S/." y lo volvemos número
+            const priceText = card.querySelector("p")?.textContent || "S/. 0";
+            const price = parseFloat(priceText.replace("S/.", "").trim());
+
+            // 🔵 LEER CARRITO
+            let cart = JSON.parse(localStorage.getItem("cartProducts")) || [];
+
+            // 🔵 VER SI YA EXISTE
+            const existingProduct = cart.find(item => item.title === title);
+
+            if (existingProduct) {
+                existingProduct.qty += 1;
+            } else {
+                cart.push({
+                    img: img,
+                    title: title,
+                    price: price,
+                    qty: 1
+                });
+            }
+
+            // 🔵 GUARDAR
+            localStorage.setItem("cartProducts", JSON.stringify(cart));
+
+            // 🛒 contador
+            cartCount++;
+            cartNumber.textContent = cartCount;
+            localStorage.setItem("cartCount", cartCount);
+
+            // popup
+            if (popup) {
+                popupImg.src = img;
+                popupTitle.textContent = title;
+                popupPrice.textContent = "S/. " + price.toFixed(2);
+
+                popup.classList.add("show");
+                setTimeout(() => popup.classList.remove("show"), 3000);
+            }
+        });
+    });
+
+});
+</script>
+
+
+
+
+</header>
+            
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-bg"></div>
+
+        <div class="hero-content">
+
+            <h1 class="welcome">Bienvenido</h1>
+
+            <h1 class="hero-title">
+                <span>G</span>
+                <span>R</span>
+                <span>O</span>
+                <span>O</span>
+                <span>V</span>
+                <span>E</span>
+                <span>L</span>
+                <span>A</span>
+                <span>B</span>
+            </h1>
+
+            <div class="tagline">TU TIENDA DE VINILOS FAVORITA</div>
+
+            <img class="vinyl"
+                src="vini.png"
+                alt="vinilo">
+
+        </div>
+    </section>
+
+    
+
+      <!-- LO MAS PEDIDO -->
+
+<section class="mas-pedido">
+
+    <h2 class="pedido-title">¡LO MÁS PEDIDO!</h2>
+
+    <div class="carousel-wrapper">
+
+        <button class="arrow left-arrow">&#10094;</button>
+
+        <div class="carousel-container">
+            <div class="carousel-track">
+
+                <div class="item">
+                    <img src="lo mas pedido/disco1.jpg" alt="">
+                    <h3>People Watching - Sam Fender</h3>
+                    <p>S/. 130.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="lo mas pedido/disco2.png" alt="">
+                    <h3>Lover (From Paris) - Taylor Swift</h3>
+                    <p>S/. 349.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="lo mas pedido/disco3.jpg" alt="">
+                    <h3>Short N’ Sweet - Sabrina Carpenter</h3>
+                    <p>S/. 189.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="lo mas pedido/disco 4.avif" alt="">
+                    <h3>MAYHEM - Lady Gaga</h3>
+                    <p>S/. 239.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="lo mas pedido/disco5.webp" alt="">
+                    <h3>30 - Adele</h3>
+                    <p>S/. 140.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="lo mas pedido/disco6.jpg" alt="">
+                    <h3>Reneé Rapp - Bite Me</h3>
+                    <p>S/. 349.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="lo mas pedido/disco7.jpg" alt="">
+                    <h3>JO1 - Be Classic</h3>
+                    <p>S/. 189.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                
+
+            </div>
+        </div>
+
+        <button class="arrow right-arrow">&#10095;</button>
+
+    </div>
+
+    <div class="dots">
+        <span></span><span></span><span></span><span></span>
+    </div>
+
+</section>
+
+
+</section>
+
+<script>
+const track = document.querySelector('.carousel-track');
+const leftArrow = document.querySelector('.left-arrow');
+const rightArrow = document.querySelector('.right-arrow');
+const dots = document.querySelectorAll('.dots span');
+
+let index = 0;
+
+function updateCarousel() {
+    track.style.transform = `translateX(${-index * 310}px)`;
+    dots.forEach(d => d.classList.remove("active"));
+    dots[index] && dots[index].classList.add("active");
+}
+
+rightArrow.addEventListener("click", () => {
+    if (index < 3) index++;
+    updateCarousel();
+});
+
+leftArrow.addEventListener("click", () => {
+    if (index > 0) index--;
+    updateCarousel();
+});
+
+updateCarousel();
+</script>
+
+
+  <!-- NOVEDADES EN VINILO -->
+
+<section class="novedades">
+
+    <h2 class="pedido-title">NOVEDADES EN VINILOS</h2>
+
+    <div class="carousel-wrapper">
+
+        <button class="arrow left-arrow novedades-left">&#10094;</button>
+
+        <div class="carousel-container">
+            <div class="carousel-track novedades-track">
+
+                <div class="item">
+                    <img src="nov. vinilo/vin1.avif" alt="">
+                    <h3>Pink Friday 2 – Nicki Minaj</h3>
+                    <p>S/. 229.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="nov. vinilo/vin2.avif" alt="">
+                    <h3>Un Verano Sin Ti – Bad Bunny</h3>
+                    <p>S/. 199.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="nov. vinilo/vin3.png" alt="">
+                    <h3>SOS – SZA</h3>
+                    <p>S/. 210.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="nov. vinilo/vin4.jpg" alt="">
+                    <h3>HIT ME HARD & SOFT – Billie Eilish</h3>
+                    <p>S/. 249.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="nov. vinilo/vin5.jpg" alt="">
+                    <h3>RENAISSANCE – Beyoncé</h3>
+                    <p>S/. 239.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="nov. vinilo/vin6.jpg" alt="">
+                    <h3>Karol G - Tropicoqueta</h3>
+                    <p>S/. 249.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="nov. vinilo/vin7.png" alt="">
+                    <h3>Addison — Addison</h3>
+                    <p>S/. 239.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+            </div>
+        </div>
+
+        <button class="arrow right-arrow novedades-right">&#10095;</button>
+
+    </div>
+
+    <div class="dots novedades-dots">
+        <span></span><span></span><span></span><span></span>
+    </div>
+
+</section>
+
+<script>
+const novTrack = document.querySelector('.novedades-track');
+const novLeft = document.querySelector('.novedades-left');
+const novRight = document.querySelector('.novedades-right');
+const novDots = document.querySelectorAll('.novedades-dots span');
+
+let novIndex = 0;
+
+function novUpdate() {
+    const move = novIndex * 320;
+    novTrack.style.transform = `translateX(-${move}px)`;
+
+    novDots.forEach(dot => dot.classList.remove("active"));
+    if (novDots[novIndex]) novDots[novIndex].classList.add("active");
+}
+
+novRight.addEventListener("click", () => {
+    if (novIndex < 3) novIndex++;
+    novUpdate();
+});
+
+novLeft.addEventListener("click", () => {
+    if (novIndex > 0) novIndex--;
+    novUpdate();
+});
+
+novUpdate();
+</script>
+
+<!-- NOVEDADES EN CD -->
+
+
+<section class="novedades-cd">
+
+    <h2 class="pedido-title">NOVEDADES EN CD</h2>
+
+    <div class="carousel-wrapper">
+
+        <button class="arrow left-arrow novedadescd-left">&#10094;</button>
+
+        <div class="carousel-container">
+            <div class="carousel-track novedadescd-track">
+
+                <div class="item">
+                    <img src="cd/rosalia.webp" alt="">
+                    <h3>Hit Me Hard & Soft – Billie Eilish (CD)</h3>
+                    <p>S/. 59.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="cd/2.webp" alt="">
+                    <h3>The Tortured Poets Department – Taylor Swift (CD)</h3>
+                    <p>S/. 69.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="cd/3.webp" alt="">
+                    <h3>Scarlet – Doja Cat (CD)</h3>
+                    <p>S/. 55.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="cd/4.webp" alt="">
+                    <h3>The Fame Monster – Lady Gaga (CD)</h3>
+                    <p>S/. 49.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="cd/5.avif" alt="">
+                    <h3>Un Verano Sin Ti – Bad Bunny (CD)</h3>
+                    <p>S/. 42.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="cd/6.webp" alt="">
+                    <h3>Divididos – Divididos</h3>
+                    <p>S/. 42.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+                <div class="item">
+                    <img src="cd/7.webp" alt="">
+                    <h3>The Last Dinner Party – From the Pyre</h3>
+                    <p>S/. 42.00</p>
+                    <button class="add-btn">Agregar</button>
+                </div>
+
+            </div>
+        </div>
+
+        <button class="arrow right-arrow novedadescd-right">&#10095;</button>
+
+    </div>
+
+    <div class="dots novedadescd-dots">
+        <span></span><span></span><span></span><span></span>
+    </div>
+
+</section>
+
+
+
+<script>
+const cdTrack = document.querySelector('.novedadescd-track');
+const cdLeft = document.querySelector('.novedadescd-left');
+const cdRight = document.querySelector('.novedadescd-right');
+const cdDots = document.querySelectorAll('.novedadescd-dots span');
+
+let cdIndex = 0;
+
+function cdUpdate() {
+    const move = cdIndex * 320;
+    cdTrack.style.transform = `translateX(-${move}px)`;
+
+    cdDots.forEach(dot => dot.classList.remove("active"));
+    if (cdDots[cdIndex]) cdDots[cdIndex].classList.add("active");
+}
+
+cdRight.addEventListener("click", () => {
+    if (cdIndex < 3) cdIndex++;
+    cdUpdate();
+});
+
+cdLeft.addEventListener("click", () => {
+    if (cdIndex > 0) cdIndex--;
+    cdUpdate();
+});
+
+cdUpdate();
+</script>
+
+ <!-- HERO2 -->
+<section class="vinilo-hero">
+    <div class="vinilo-bg"></div>
+
+    <div class="vinilo-contenido">
+        <h1>Vinilos Personalizados</h1>
+        <p>Expresa tu estilo con vinilos únicos y a tu medida</p>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-container">
+
+        <!-- Sobre la empresa -->
+        <div class="footer-about">
+            <h2>GrooveLab</h2>
+            <p>
+                En GrooveLab, somos un emprendimiento apasionado por la música y el estilo retro.
+                Nos dedicamos a ofrecer vinilos y CDs originales de artistas icónicos y actuales,
+                conectando a cada persona con el sonido auténtico que ama. Creemos que la música 
+                no solo se escucha, sino que se vive, se siente y se colecciona.
+            </p>
+        </div>
+
+        <!-- Información -->
+        <div class="footer-column">
+            <h3>Información</h3>
+            <p><a href="#">Nosotros</a></p>
+            <p><a href="#">Novedades</a></p>
+        </div>
+
+        <!-- Servicio al cliente -->
+        <div class="footer-column">
+            <h3>Servicio al cliente</h3>
+            <p><a href="#">Términos y Condiciones</a></p>
+            <p><a href="#">Contacto</a></p>
+        </div>
+
+        <!-- Contáctanos -->
+        <div class="footer-column">
+            <h3>Contáctanos</h3>
+            <p><i class="fa-solid fa-phone"></i> +51 567392809</p>
+            <p><i class="fa-solid fa-envelope"></i> GrooveLab@gmail.com</p>
+        </div>
+
+        <!-- Redes sociales -->
+        <div class="footer-social">
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+
+    </div>
+</footer>
+
+
+
+
+</body>
+
+</html>

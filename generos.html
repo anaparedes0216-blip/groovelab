@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Géneros - GrooveLab</title>
+    <link rel="stylesheet" href="generos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+   <header class="navbar">
+        <div class="nav-inner">
+            <div class="nav-left logo">
+    <a href="index.html">GrooveLab</a>
+</div>
+
+            <nav class="nav-center">
+                <a href="artistas.html">ARTISTAS</a>
+                <a href="generos.html"class="active">GÉNEROS</a>
+                <a href="preventa.html">PRE-VENTA</a>
+                <a href="stock.html">STOCK</a>
+                <a href="nosotros.html">NOSOTROS</a>
+            </nav>
+
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="🔍">
+                </div>
+
+                <!-- CARRITO -->
+    <div class="cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count">0</span>
+    </div>
+
+    <a class="login-btn" href="sesión.html">INICIAR SESIÓN / REGISTRARSE</a>
+</div>
+
+<div class="cart-popup" id="cart-popup">
+    <div class="cart-item">
+        <img id="popup-img" src="" alt="">
+        <div class="cart-info">
+            <p id="popup-title"></p>
+            <span id="popup-price"></span>
+        </div>
+    </div>
+
+    <a href="carrito.html" class="view-cart">Ver carrito</a>
+</div>
+
+<script>
+  (function () {
+    const navEntries = performance.getEntriesByType("navigation");
+    if (navEntries.length > 0 && navEntries[0].type === "reload") {
+        localStorage.removeItem("cartProducts");
+        localStorage.removeItem("cartCount");
+    }
+})();
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cartNumber = document.getElementById("cart-count");
+
+    let cartCount = localStorage.getItem("cartCount")
+        ? parseInt(localStorage.getItem("cartCount"))
+        : 0;
+
+    cartNumber.textContent = cartCount;
+
+    const buttons = document.querySelectorAll(".add-btn, .btn-add");
+
+    const popup = document.getElementById("cart-popup");
+    const popupImg = document.getElementById("popup-img");
+    const popupTitle = document.getElementById("popup-title");
+    const popupPrice = document.getElementById("popup-price");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+
+            const card = button.closest(".preventa-card, .stock-card");
+            if (!card) return;
+
+            const img = card.querySelector("img").src;
+            const title = card.querySelector("h3").textContent;
+
+            // 🔴 quitamos "S/." y lo volvemos número
+            const priceText = card.querySelector("p")?.textContent || "S/. 0";
+            const price = parseFloat(priceText.replace("S/.", "").trim());
+
+            // 🔵 LEER CARRITO
+            let cart = JSON.parse(localStorage.getItem("cartProducts")) || [];
+
+            // 🔵 VER SI YA EXISTE
+            const existingProduct = cart.find(item => item.title === title);
+
+            if (existingProduct) {
+                existingProduct.qty += 1;
+            } else {
+                cart.push({
+                    img: img,
+                    title: title,
+                    price: price,
+                    qty: 1
+                });
+            }
+
+            // 🔵 GUARDAR
+            localStorage.setItem("cartProducts", JSON.stringify(cart));
+
+            // 🛒 contador
+            cartCount++;
+            cartNumber.textContent = cartCount;
+            localStorage.setItem("cartCount", cartCount);
+
+            // popup
+            if (popup) {
+                popupImg.src = img;
+                popupTitle.textContent = title;
+                popupPrice.textContent = "S/. " + price.toFixed(2);
+
+                popup.classList.add("show");
+                setTimeout(() => popup.classList.remove("show"), 3000);
+            }
+        });
+    });
+
+});
+</script>
+
+</header>
+
+
+
+<section class="generos-section">
+
+  <h2 class="generos-title">GÉNEROS</h2>
+
+  <div class="generos-carousel">
+
+    <button class="gen-arrow left" id="genPrev">&#10094;</button>
+
+    <div class="generos-viewport">
+
+      <div class="generos-track" id="generosTrack">
+
+        <!-- ===== PÁGINA 1 (6) ===== -->
+        <div class="generos-page">
+          <div class="genero-item"><img src="generos/pop.avif"><h3>POP</h3></div>
+          <div class="genero-item"><img src="generos/rock.jpg"><h3>ROCK</h3></div>
+          <div class="genero-item"><img src="generos/alter.webp"><h3>ALTERNATIVO</h3></div>
+          <div class="genero-item"><img src="generos/soul.jpg"><h3>SOUL</h3></div>
+          <div class="genero-item"><img src="generos/BALADA.avif"><h3>BALADAS</h3></div>
+          <div class="genero-item"><img src="generos/urbano.webp"><h3>URBANO</h3></div>
+        </div>
+
+        <!-- ===== PÁGINA 2 (6) ===== -->
+        <div class="generos-page">
+          <div class="genero-item"><img src="generos/jazz.jpg"><h3>JAZZ</h3></div>
+          <div class="genero-item"><img src="generos/rap.jpg"><h3>RAP</h3></div>
+          <div class="genero-item"><img src="generos/FUNK.jpg"><h3>FUNK</h3></div>
+          <div class="genero-item"><img src="generos/indie.jpg"><h3>INDIE</h3></div>
+          <div class="genero-item"><img src="generos/latino.jpg"><h3>LATINO</h3></div>
+          <div class="genero-item"><img src="generos/clasico.jpg"><h3>CLÁSICO</h3></div>
+        </div>
+
+      </div>
+    </div>
+
+    <button class="gen-arrow right" id="genNext">&#10095;</button>
+
+    
+  </div>
+
+</section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const track = document.getElementById("generosTrack");
+  const prev = document.getElementById("genPrev");
+  const next = document.getElementById("genNext");
+
+  let index = 0;
+  const totalPages = document.querySelectorAll(".generos-page").length;
+
+  function update(){
+    track.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  next.addEventListener("click", () => {
+    if(index < totalPages - 1){
+      index++;
+      update();
+    }
+  });
+
+  prev.addEventListener("click", () => {
+    if(index > 0){
+      index--;
+      update();
+    }
+  });
+
+});
+</script>
+
+
+
+

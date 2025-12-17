@@ -1,0 +1,475 @@
+/* RESET */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background:
+        radial-gradient(circle at 20% 40%, rgba(255,140,0,0.25), transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,200,0,0.2), transparent 55%),
+        #111;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: sans-serif;
+}
+
+
+/* ===== NAVBAR GENERAL ===== */
+
+.navbar {
+    width: 100%;
+    background: #C84F16;           
+    padding: 12px 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Helvetica', sans-serif;
+    position: fixed;               
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+/* ===== LOGO ===== */
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    font-family: Helvetica, sans-serif;
+    overflow-x: hidden;
+}
+
+.logo a{
+    color: white;
+    text-decoration: none;
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+}
+
+/* ===== MENÚ PRINCIPAL ===== */
+
+.nav-links {
+    display: flex;
+    gap: 35px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nav-links a:hover {
+    opacity: 0.7;
+}
+
+/* ===== SEARCH BOX ===== */
+
+.search-box {
+    position: relative;
+    margin-right: 20px;
+    order: 1;
+}
+
+.search-box input {
+    width: 160px;
+    height: 20px;
+    border-radius: 20px;
+    border: none;
+    padding-left: 25px;
+    outline: none;
+    background: white;
+}
+
+.search-box::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 0px;
+    font-size: 13px;
+}
+
+/* ===== BOTÓN DE LOGIN ===== */
+
+.login-btn:hover {
+    opacity: 0.7;
+}
+
+
+.nav-center {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+.nav-center a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 15px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto; 
+}
+
+
+.search-box input {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: none;
+    width: 160px;
+}
+
+.login-btn {
+    text-decoration: none;
+    font-weight: 700;
+    color: white;
+    font-size: 13px;
+    order: 2;
+}
+
+.nav-inner {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-center a.active,
+.nav-center a:hover {
+    background: #ffffff33;
+}
+
+/* ===== CARRITO ===== */
+
+.cart i {
+    font-size: 20px;
+}
+
+.cart {
+    position: relative;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 5px;
+    order: 3;
+}
+
+#cart-count {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    background: white;
+    color: #C84F16;
+    font-size: 11px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.cart-popup {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    width: 260px;
+    background: #111;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+
+.cart-popup.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.cart-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.cart-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.cart-info p {
+    font-size: 13px;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.cart-info span {
+    font-size: 12px;
+    color: #C84F16;
+    font-weight: 600;
+}
+
+.view-cart {
+    display: block;
+    text-align: center;
+    padding: 8px;
+    border-radius: 20px;
+    background: #C84F16;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+
+
+.stock-page .search-input,
+.search-input {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(22, 21, 21, 0.5) !important;
+    color: #fff !important;
+    backdrop-filter: blur(8px) !important;
+    border-radius: 10px !important;
+    font-size: 14px;
+    outline: none !important;
+    transition: 0.3s ease !important;
+}
+
+
+/* CONTENEDOR GENERAL */
+.container {
+    width: 90%;
+    margin: 50px auto;
+    display: flex;
+    gap: 40px;
+}
+
+/* FILTROS */
+.filters {
+    width: 250px;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+}
+
+.filters h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.filters h3 {
+    font-size: 30px;       
+    color: #f47c26;
+    margin-bottom: 12px;   
+    margin-top: 10px;       
+}
+
+details {
+    background: rgba(22, 21, 21, 0.5);
+    backdrop-filter: blur(5px);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+summary {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+/* === BUSCADOR === */
+
+.search-input {
+    width: 100%;
+    padding: 10px 12px;
+    background: #2d2d30;            
+    border: 2px;       
+    border-radius: 10px;              
+    color: white;                      
+    font-size: 20px;
+    font-family: 'Merriweather', serif;
+    outline: none;                    
+    transition: all 0.25s ease;
+    margin-bottom: 20px;
+}
+
+.filters-container {
+    width: 260px;
+    padding: 15px;
+    background: rgba(0,0,0,0.35);
+    border-radius: 30px;
+    color: white;
+    font-family: 'Merriweather', serif;
+    margin-left: 60px;
+}
+
+.filters-container h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #ff8a28;
+}
+
+.search-box-artists input {
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    margin-bottom: 18px;
+}
+
+.filter-group label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+}
+
+.filter-group select {
+    width: 100%;
+    margin-top: 6px;
+    padding: 7px;
+    border-radius: 6px;
+    border: none;
+}
+
+.ver-mas-btn {
+    display: block;
+    margin: 40px auto;
+    transform: translateX(150px); 
+    padding: 12px 35px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 600;
+    background: #ec6f1e;
+    color: #ffffff;
+}
+
+.ver-mas-btn:hover {
+  
+    box-shadow: 0 0 20px rgba(78, 9, 3, 0.8);
+}
+
+.page-bg {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 40%, rgba(255,140,0,0.25), transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,200,0,0.2), transparent 55%),
+        #111;
+    z-index: -1;
+}
+
+/* Título */
+.section-title {
+    text-align: center;
+    margin-top: 120px;
+    font-size: 42px;
+    font-weight: 900;
+    color: white;
+}
+
+
+.stock-grid{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:50px;
+    row-gap: 80px;
+}
+
+
+.stock-card{
+    text-align: center;
+    color: white;
+}
+
+
+.stock-card img{
+    width: 100%;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+     box-shadow: 0 0 18px rgba(0,0,0,0.6);
+}
+
+.stock-card h3{
+    font-size: 16px;
+    font-weight: 500;
+    margin: 12px 0 6px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.stock-card p{
+    font-size: 15px;
+    margin: 8px 0 12px;
+}
+
+.btn-add{
+    background: #ec6f1e;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+
+.add-btn:hover {
+    background: #ff7e29;
+}
+
+/* BOTÓN VER MAS */
+.ver-mas-btn{
+    background: #e15b13;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s ease;
+}

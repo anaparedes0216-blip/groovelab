@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Géneros - GrooveLab</title>
+    <link rel="stylesheet" href="carrito.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+   <header class="navbar">
+        <div class="nav-inner">
+            <div class="nav-left logo">
+    <a href="index.html">GrooveLab</a>
+</div>
+
+            <nav class="nav-center">
+                <a href="artistas.html">ARTISTAS</a>
+                <a href="generos.html"class="active">GÉNEROS</a>
+                <a href="preventa.html">PRE-VENTA</a>
+                <a href="stock.html">STOCK</a>
+                <a href="nosotros.html">NOSOTROS</a>
+            </nav>
+
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="🔍">
+                </div>
+
+                <!-- CARRITO -->
+    <div class="cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count">0</span>
+    </div>
+
+    <a class="login-btn" href="sesión.html">INICIAR SESIÓN / REGISTRARSE</a>
+</div>
+
+<div class="cart-popup" id="cart-popup">
+    <div class="cart-item">
+        <img id="popup-img" src="" alt="">
+        <div class="cart-info">
+            <p id="popup-title"></p>
+            <span id="popup-price"></span>
+        </div>
+    </div>
+
+    <a href="carrito.html" class="view-cart">Ver carrito</a>
+</div>
+
+<script>
+  (function () {
+    const navEntries = performance.getEntriesByType("navigation");
+    if (navEntries.length > 0 && navEntries[0].type === "reload") {
+        localStorage.removeItem("cartProducts");
+        localStorage.removeItem("cartCount");
+    }
+})();
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cartNumber = document.getElementById("cart-count");
+
+    let cartCount = localStorage.getItem("cartCount")
+        ? parseInt(localStorage.getItem("cartCount"))
+        : 0;
+
+    cartNumber.textContent = cartCount;
+
+    const buttons = document.querySelectorAll(".add-btn, .btn-add");
+
+    const popup = document.getElementById("cart-popup");
+    const popupImg = document.getElementById("popup-img");
+    const popupTitle = document.getElementById("popup-title");
+    const popupPrice = document.getElementById("popup-price");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+
+            const card = button.closest(".preventa-card, .stock-card");
+            if (!card) return;
+
+            const img = card.querySelector("img").src;
+            const title = card.querySelector("h3").textContent;
+
+            // 🔴 quitamos "S/." y lo volvemos número
+            const priceText = card.querySelector("p")?.textContent || "S/. 0";
+            const price = parseFloat(priceText.replace("S/.", "").trim());
+
+            // 🔵 LEER CARRITO
+            let cart = JSON.parse(localStorage.getItem("cartProducts")) || [];
+
+            // 🔵 VER SI YA EXISTE
+            const existingProduct = cart.find(item => item.title === title);
+
+            if (existingProduct) {
+                existingProduct.qty += 1;
+            } else {
+                cart.push({
+                    img: img,
+                    title: title,
+                    price: price,
+                    qty: 1
+                });
+            }
+
+            // 🔵 GUARDAR
+            localStorage.setItem("cartProducts", JSON.stringify(cart));
+
+            // 🛒 contador
+            cartCount++;
+            cartNumber.textContent = cartCount;
+            localStorage.setItem("cartCount", cartCount);
+
+            // popup
+            if (popup) {
+                popupImg.src = img;
+                popupTitle.textContent = title;
+                popupPrice.textContent = "S/. " + price.toFixed(2);
+
+                popup.classList.add("show");
+                setTimeout(() => popup.classList.remove("show"), 3000);
+            }
+        });
+    });
+
+});
+</script>
+
+</header>
+
+<body>
+
+<header style="padding:20px; font-weight:700;">
+    GrooveLab
+</header>
+
+<main class="cart-page">
+
+    <!-- LISTA -->
+    <section class="cart-list">
+        <h2>Carrito de compras</h2>
+
+        <div id="cart-items"></div>
+
+        <a href="index.html" class="back">← Seguir comprando</a>
+    </section>
+
+    <!-- RESUMEN -->
+    <aside class="cart-summary">
+        <h3>Resumen</h3>
+
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="subtotal">S/. 0.00</span>
+        </div>
+
+        <div class="summary-row">
+            <span>Envío</span>
+            <span>Gratis</span>
+        </div>
+
+        <div class="summary-total">
+            <span>Total</span>
+            <span id="total">S/. 0.00</span>
+        </div>
+
+        <button class="checkout-btn">Finalizar compra</button>
+    </aside>
+
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const cartItemsContainer = document.getElementById("cart-items");
+    const subtotalEl = document.getElementById("subtotal");
+    const totalEl = document.getElementById("total");
+
+    let cart = JSON.parse(localStorage.getItem("cartProducts")) || [];
+
+    function renderCart() {
+
+        cartItemsContainer.innerHTML = "";
+        let subtotal = 0;
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = "<p>Tu carrito está vacío 🥲</p>";
+            subtotalEl.textContent = "S/. 0.00";
+            totalEl.textContent = "S/. 0.00";
+            return;
+        }
+
+        cart.forEach((item, index) => {
+
+            subtotal += item.price * item.qty;
+
+            const div = document.createElement("div");
+            div.className = "cart-item";
+
+            div.innerHTML = `
+                <img src="${item.img}">
+                <div class="cart-info">
+                    <h4>${item.title}</h4>
+                    <span>S/. ${item.price.toFixed(2)}</span>
+                </div>
+
+                <div class="cart-qty">
+                    <button onclick="changeQty(${index}, -1)">−</button>
+                    <span>${item.qty}</span>
+                    <button onclick="changeQty(${index}, 1)">+</button>
+                </div>
+
+                <div class="remove" onclick="removeItem(${index})">✕</div>
+            `;
+
+            cartItemsContainer.appendChild(div);
+        });
+
+        subtotalEl.textContent = `S/. ${subtotal.toFixed(2)}`;
+        totalEl.textContent = `S/. ${subtotal.toFixed(2)}`;
+
+        localStorage.setItem("cartProducts", JSON.stringify(cart));
+    }
+
+    window.changeQty = (index, amount) => {
+        cart[index].qty += amount;
+        if (cart[index].qty <= 0) cart.splice(index, 1);
+        renderCart();
+    };
+
+    window.removeItem = (index) => {
+        cart.splice(index, 1);
+        renderCart();
+    };
+
+    renderCart();
+});
+</script>
+
+</body>
+</html>
